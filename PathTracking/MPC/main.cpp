@@ -42,7 +42,7 @@ int main() {
     std::vector<double> y_history;
 
     for (int i = 0; i < param.T; ++i) {
-        Eigen::MatrixXd xref = reference_trajectory.xref;
+        Eigen::MatrixXd xref = reference_trajectory.xref; // 3*i
         Eigen::VectorXd xref_i = xref.col(i);
         Eigen::VectorXd ref_delta = reference_trajectory.dref.col(i);
 

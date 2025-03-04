@@ -98,7 +98,8 @@ refTraj MyReferencePath::calc_ref_trajectory(vector<double> robot_state,paramete
     ref_traj.xref(0,0)=refer_path[ind][0];
     ref_traj.xref(1,0)=refer_path[ind][1];
     ref_traj.xref(2,0)=refer_path[ind][2];
-    //参考控制量[v,delta]
+    //参考控制量[v,delta]，预测时域T的连续控制量:[2,T]
+    // 假设：纵向速度保持不变
     double ref_delta = atan2(param.L*k,1);
     for(int i=0;i<param.T;i++){
         ref_traj.dref(0,i)=robot_state[3];
