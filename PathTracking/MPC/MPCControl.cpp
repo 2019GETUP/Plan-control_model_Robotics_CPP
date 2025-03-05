@@ -3,9 +3,9 @@
 MPCControl::MPCControl(int nx, int nu, int t) : NX(nx), NU(nu), T(t) {}
 
 vector<double> MPCControl::linearMPCControl(MatrixXd xref, Vector3d x0, MatrixXd ref_delta, KinematicModel ugv) {
-    int NX = xref.rows();
-    int NU = ref_delta.rows();
-    int T = xref.cols() - 1;  // Horizon length.
+    int NX = xref.rows();  // 3*（T+1）；==3
+    int NU = ref_delta.rows();  //2*T；==2
+    int T = xref.cols() - 1;  // Horizon length. ==T
 
     // Define optimization variables.
     MatrixXd x(NX, T + 1);

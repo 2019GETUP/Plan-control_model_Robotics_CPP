@@ -13,7 +13,7 @@ int main() {
     parameters param;
     //Number of states.
     param.NX = 3;
-    // Number of control inputs.
+    // Number of control inputs；MPC仅存在2个变量：v、wheel_angle;
     param.NU = 3;
     // Horizon length.
     param.T = 3;
@@ -33,7 +33,8 @@ int main() {
     double L = 2.0;   // Vehicle wheelbase
     // Define reference trajectory using your MyReferPath class
     MyReferencePath reference_path;
-    auto reference_trajectory = reference_path.calc_ref_trajectory(robot_state, param, 1.0);
+    // reference_trajectory，xref矩阵：3*（T+1），每列代表一个时间步长的参考状态；dref矩阵：2*T，每列代表参考的前轮转角、速度（假设为当前车速）；
+    auto reference_trajectory = reference_path.calc_ref_trajectory(robot_state, param, 1.0); 
     KinematicModel ugv(x0(0), x0(1), x0(2), 2.0, L, dt);
 
 
@@ -42,9 +43,10 @@ int main() {
     std::vector<double> y_history;
 
     for (int i = 0; i < param.T; ++i) {
-        Eigen::MatrixXd xref = reference_trajectory.xref; // 3*i
+        // 参考轨迹的构造，与MPC求解器无关，计算过程在实际应用中无效，实际中直接：当前点最近点、当前点轨迹的参考前轮转角；
+        Eigen::MatrixXd xref = reference_trajectory.xref; // 3*（T+1）
         Eigen::VectorXd xref_i = xref.col(i);
-        Eigen::VectorXd ref_delta = reference_trajectory.dref.col(i);
+        Eigen::VectorXd ref_delta = reference_trajectory.dref.col(i); // 2*T
 
         // Call the MPC controller to compute control inputs
         std::vector<double> control_inputs = mpc.linearMPCControl(xref_i, x0, ref_delta, ugv);
