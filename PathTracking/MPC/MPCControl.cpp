@@ -44,6 +44,7 @@ vector<double> MPCControl::linearMPCControl(MatrixXd xref, Vector3d x0, MatrixXd
     }
 
     // Final state cost.
+    /* 这里的代价函数，应该是累加的值吗？查看osqp的求解器; 后续依据cost最小代价值，应该是cost矩阵的所有元素的和最小？*/
     cost(T) = (x.col(T) - xref.col(T)).transpose() * Qf * (x.col(T) - xref.col(T));
 
     // Set initial state.

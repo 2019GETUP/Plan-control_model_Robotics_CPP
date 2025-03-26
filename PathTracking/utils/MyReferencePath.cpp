@@ -99,7 +99,7 @@ refTraj MyReferencePath::calc_ref_trajectory(vector<double> robot_state,paramete
     ref_traj.xref(1,0)=refer_path[ind][1];
     ref_traj.xref(2,0)=refer_path[ind][2];
     //参考控制量[v,delta]，预测时域T的连续控制量:[2,T]
-    // 假设：纵向速度保持不变。曲率也不变？
+    // 假设：纵向速度保持不变。投影点的曲率也不变；动作参考值，使用投影点的速度v、曲率k；（时不变系统？）
     double ref_delta = atan2(param.L*k,1);
     for(int i=0;i<param.T;i++){
         ref_traj.dref(0,i)=robot_state[3];
@@ -108,7 +108,7 @@ refTraj MyReferencePath::calc_ref_trajectory(vector<double> robot_state,paramete
 
     double travel = 0.0;
     
-    //预测时域：T+1，参考轨迹转存；i=0,是当前点；
+    //预测时域：T+1，参考轨迹转存；i=0,是当前点；不需要再从0开始赋值；i+1
     for(int i=0;i<param.T+1;i++){
         travel+=abs(robot_state[3])*param.dt;
 

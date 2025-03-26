@@ -1,5 +1,10 @@
 {
     "files.associations": {
         "random": "cpp"
+    },
+    "workbench.colorCustomizations": {
+        "activityBar.background": "#321E6B",
+        "titleBar.activeBackground": "#462A96",
+        "titleBar.activeForeground": "#FBFBFE"
     }
 }
